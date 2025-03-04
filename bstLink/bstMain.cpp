@@ -24,13 +24,74 @@ void menu(){
     cout << "7: # of Nodes" << endl;
     cout << "8: Height" << endl;
     cout << "9: Bigger Side" << endl;
+    cout << "0: Close Program" << endl;
 }
 
-int main(){
+int main(int argc, char* argv[]){
     bstree t;
+    string line;
 
-    t.insert(1);
-    t.in();
+    if(argc != 2){
+        cerr << "Usage: " << argv[0] << "<BSTCommandFile>" << endl;
+        return 1;
+    }
+
+    ifstream commandFile(argv[1]);
+
+    if(!commandFile.is_open()){
+        cerr << "Unable to open file" << argv[1] << endl;
+        return 1;
+    }
+
+    while(getline(commandFile, line)){
+        stringstream ss(line);
+        int mode, x;
+        ss >> mode;
+
+        switch (mode){
+            case 1:
+                ss >> x;
+                t.insert(x);
+                break;
+
+            case 2:
+                ss >> x;
+                t.search(x);
+                break;
+
+            case 3:
+                t.pre();
+                break;
+
+            case 4:
+                t.in();
+                break;
+
+            case 5:
+                t.post();
+                break;
+
+            case 7:
+                t.numnodes();
+                break;
+
+            case 8:
+                t.height();
+                break;
+
+            case 9:
+                t.bigger();
+                break;
+
+            case 0:
+                return 0;
+                break;
+
+            default:
+                cout << "please input the listed numbers." << endl;
+                break;
+        }
+    }
 
     return 0;
 }

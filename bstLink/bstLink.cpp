@@ -14,7 +14,8 @@ treenode* makeatreenode(int x){
 }
 
 bstree::bstree(){
-    root = new treenode;
+    root = makeatreenode(0);
+    
 }
 
 void bstree::in(){
@@ -56,7 +57,7 @@ void bstree::pre(treenode* root){
 void bstree::post(){
     cout << "Postorder: ";
 
-    pre(root);
+    post(root);
 
     cout << endl;
 }
@@ -66,8 +67,8 @@ void bstree::post(treenode* root){
         return;
     }
     
-    post(root->rchild);
     post(root->lchild);
+    post(root->rchild);
     cout << root->data << " ";
 }
 
@@ -76,7 +77,28 @@ void bstree::insert(int x){
 }
 
 void bstree::insert(int x, treenode* root){
-    
+    if(root->data == 0){
+        root->data = x;
+        return;
+    }
+
+    if(root->data == x){
+        return;
+    }
+
+    if(x < root->data){
+        if(root->lchild == NULL){
+            root->lchild = makeatreenode(x);
+        }else{
+            insert(x, root->lchild);
+        }
+    }else if(x > root->data){
+        if(root->rchild == NULL){
+            root->rchild = makeatreenode(x);
+        }else{
+            insert(x, root->rchild);
+        }
+    }
 }
 
 void bstree::remove(int x){
@@ -89,10 +111,12 @@ bool bstree::search(int x){
 
 bool bstree::search(int x, treenode* root){
     if(root == NULL){
+        cout << "No" << endl;
         return false;
     }
 
     if(x == root->data){
+        cout << "Yes" << endl;
         return true;
     }
 
@@ -101,6 +125,8 @@ bool bstree::search(int x, treenode* root){
     }else{
         search(x, root->rchild);
     }
+
+    return false;
 }
 
 int bstree::numnodes(){
@@ -124,5 +150,13 @@ int bstree::height(){
 }
 
 int bstree::height(treenode* root){
-    
+    return 0;
+}
+
+char bstree::bigger(){
+    return bigger(root);
+}
+
+char bstree::bigger(treenode* root){
+    return 'a';
 }

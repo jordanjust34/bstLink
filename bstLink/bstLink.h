@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 using namespace std;
 
 struct treenode{
@@ -19,6 +20,7 @@ class bstree{
         bool search(int x);
         int numnodes();
         int height();
+        char bigger();
     private:
         void in(treenode* root);
         void pre(treenode* root);
@@ -27,5 +29,6 @@ class bstree{
         bool search(int x, treenode* root);
         int numnodes(treenode* root);
         int height(treenode* root);
+        char bigger(treenode* root);
         treenode* root;
 };
