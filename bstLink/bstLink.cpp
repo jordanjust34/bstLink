@@ -13,9 +13,24 @@ treenode* makeatreenode(int x){
     return box;
 }
 
+treenode* findMin(treenode* root){
+    if(root == NULL){
+        return root;
+    }
+
+    if(root->rchild != NULL){
+        root = root->rchild;
+    }
+
+    while(root != NULL && root->lchild != NULL){
+        root = root->lchild;
+    }
+
+    return root;
+}
+
 bstree::bstree(){
     root = makeatreenode(0);
-    
 }
 
 void bstree::in(){
@@ -102,7 +117,34 @@ void bstree::insert(int x, treenode* root){
 }
 
 void bstree::remove(int x){
+    remove(x, root);
+}
 
+treenode* bstree::remove(int x, treenode* root){
+    if(root == NULL){
+        return root;
+    }
+
+    if(x < root->data){
+        root->lchild = remove(x, root->lchild);
+    }else if(x > root->data){
+        root->rchild = remove(x, root->rchild);
+    }else{
+        if(root->lchild == NULL){
+            treenode* tmp = root->rchild;
+            delete root;
+            return tmp;
+        }else if(root->rchild == NULL){
+            treenode* tmp = root->lchild;
+            delete root;
+            return tmp;
+        }
+
+        treenode* min = findMin(root);
+        root->data = min->data;
+        root->rchild = remove(min->data, root->rchild);
+    }
+    return root;
 }
 
 bool bstree::search(int x){
@@ -129,7 +171,10 @@ bool bstree::search(int x, treenode* root){
     return false;
 }
 
+
+
 int bstree::numnodes(){
+    cout << numnodes(root) << endl;
     return numnodes(root);
 }
 
@@ -138,25 +183,54 @@ int bstree::numnodes(treenode* root){
         return 0;
     }
 
-    int leftNum, rightNum;
-    leftNum = numnodes(root->lchild);
-    rightNum = numnodes(root->rchild);
+    int leftNum = numnodes(root->lchild);
+    int rightNum = numnodes(root->rchild);
 
     return leftNum + rightNum + 1;
 }
 
 int bstree::height(){
+    cout << height(root) << endl;
     return height(root);
 }
 
 int bstree::height(treenode* root){
-    return 0;
+    if(root == NULL){
+        return 0;
+    }
+
+    int leftH, rightH = 0;
+
+    leftH = height(root->lchild) + 1;
+    rightH = height(root->rchild) + 1;
+
+    if(leftH > rightH){
+        return leftH;
+    }else{
+        return rightH;
+    }
 }
 
 char bstree::bigger(){
+    cout << bigger(root) << endl;
     return bigger(root);
 }
 
 char bstree::bigger(treenode* root){
-    return 'a';
+    if(root == NULL){
+        return ' ';
+    }
+
+    int leftH, rightH = 0;
+
+    leftH = height(root->lchild) + 1;
+    rightH = height(root->rchild) + 1;
+
+    if(leftH > rightH){
+        return 'L';
+    }else if(leftH < rightH){
+        return 'R';
+    }
+    
+    return 'E';
 }

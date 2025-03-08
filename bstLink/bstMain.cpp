@@ -29,33 +29,24 @@ void menu(){
 
 int main(int argc, char* argv[]){
     bstree t;
-    string line;
+    fstream cmdFile(argv[1]);
+    int mode, x;
 
-    if(argc != 2){
-        cerr << "Usage: " << argv[0] << "<BSTCommandFile>" << endl;
-        return 1;
-    }
-
-    ifstream commandFile(argv[1]);
-
-    if(!commandFile.is_open()){
-        cerr << "Unable to open file" << argv[1] << endl;
-        return 1;
-    }
-
-    while(getline(commandFile, line)){
-        stringstream ss(line);
-        int mode, x;
-        ss >> mode;
-
+    cmdFile >> mode;
+    while(mode != 0){
         switch (mode){
             case 1:
-                ss >> x;
+                cmdFile >> x;
                 t.insert(x);
                 break;
 
+            case -1:
+                cmdFile >> x;
+                t.remove(x);
+                break;
+
             case 2:
-                ss >> x;
+                cmdFile >> x;
                 t.search(x);
                 break;
 
@@ -91,6 +82,7 @@ int main(int argc, char* argv[]){
                 cout << "please input the listed numbers." << endl;
                 break;
         }
+        cmdFile >> mode;
     }
 
     return 0;
